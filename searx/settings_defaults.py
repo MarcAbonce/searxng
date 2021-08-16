@@ -175,6 +175,7 @@ SCHEMA = {
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
+        'redis_host': SettingsValue(str, '127.0.0.1', 'SEARX_REDIS_HOST'),
     },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),

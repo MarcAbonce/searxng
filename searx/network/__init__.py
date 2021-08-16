@@ -12,9 +12,11 @@ import httpx
 import anyio
 import h2.exceptions
 
+from searx import settings
 from .network import get_network, initialize, check_network_configuration
 from .client import get_loop
 from .raise_for_httperror import raise_for_httperror
+from .cache import redis_cache
 
 # queue.SimpleQueue: Support Python 3.6
 try:
@@ -127,9 +129,10 @@ def request(method, url, **kwargs):
     return response
 
 
-def get(url, **kwargs):
-    kwargs.setdefault('allow_redirects', True)
-    return request('get', url, **kwargs)
+if "redis_host" not in settings["server"]:
+    def get(url, **kwargs):
+        kwargs.setdefault('allow_redirects', True)
+        return request('get', url, **kwargs)
 
 
 def options(url, **kwargs):
@@ -142,8 +145,9 @@ def head(url, **kwargs):
     return request('head', url, **kwargs)
 
 
-def post(url, data=None, **kwargs):
-    return request('post', url, data=data, **kwargs)
+if "redis_host" not in settings["server"]:
+    def post(url, data=None, **kwargs):
+        return request('post', url, data=data, **kwargs)
 
 
 def put(url, data=None, **kwargs):
@@ -237,3 +241,16 @@ def stream(method, url, **kwargs):
     response.close = MethodType(_close_response_method, response)
 
     return response, generator
+
+
+if "redis_host" in settings["server"]:
+    @redis_cache()
+    def get(url, **kwargs):
+        kwargs = kwargs.get("kwargs", kwargs)
+        kwargs.setdefault('allow_redirects', True)
+        return request('get', url, **kwargs)
+
+    @redis_cache()
+    def post(url, data=None, **kwargs):
+        kwargs = kwargs.get("kwargs", kwargs)
+        return request('post', url, data=data, **kwargs)
