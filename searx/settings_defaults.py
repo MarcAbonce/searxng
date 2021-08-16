@@ -176,6 +176,7 @@ SCHEMA = {
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
         'redis_host': SettingsValue(str, '127.0.0.1', 'SEARX_REDIS_HOST'),
+        'redis_password': SettingsValue(str, '', 'SEARX_REDIS_PASSWORD'),
     },
     'ui': {
         'static_path': SettingsDirectoryValue(str, os.path.join(searx_dir, 'static')),
