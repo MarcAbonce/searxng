@@ -105,6 +105,9 @@ def request(method, url, **kwargs):
     # network
     network = get_context_network()
 
+    kwargs['timeout'] = timeout + 5
+    timeout += 5.3
+
     # do request
     future = asyncio.run_coroutine_threadsafe(network.request(method, url, **kwargs), get_loop())
     try:
