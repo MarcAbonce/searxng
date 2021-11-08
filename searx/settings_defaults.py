@@ -175,7 +175,7 @@ SCHEMA = {
         'http_protocol_version': SettingsValue(('1.0', '1.1'), '1.0'),
         'method': SettingsValue(('POST', 'GET'), 'POST'),
         'default_http_headers': SettingsValue(dict, {}),
-        'redis_host': SettingsValue(str, '127.0.0.1', 'SEARX_REDIS_HOST'),
+        'redis_host': SettingsValue(str, '', 'SEARX_REDIS_HOST'),
         'redis_password': SettingsValue(str, '', 'SEARX_REDIS_PASSWORD'),
     },
     'ui': {

@@ -132,7 +132,7 @@ def request(method, url, **kwargs):
     return response
 
 
-if "redis_host" not in settings["server"]:
+if not redis_cache:
     def get(url, **kwargs):
         kwargs.setdefault('allow_redirects', True)
         return request('get', url, **kwargs)
@@ -148,7 +148,7 @@ def head(url, **kwargs):
     return request('head', url, **kwargs)
 
 
-if "redis_host" not in settings["server"]:
+if not redis_cache:
     def post(url, data=None, **kwargs):
         return request('post', url, data=data, **kwargs)
 
@@ -246,7 +246,7 @@ def stream(method, url, **kwargs):
     return response, generator
 
 
-if "redis_host" in settings["server"]:
+if redis_cache:
     @redis_cache()
     def get(url, **kwargs):
         kwargs = kwargs.get("kwargs", kwargs)

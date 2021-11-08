@@ -31,7 +31,7 @@ class RequestCacheUserInterface(CacheUserInterface):
         return result
 
 
-if "redis_host" in settings["server"]:
+if settings["server"].get("redis_host"):
     client = redis.StrictRedis(host=settings["server"]["redis_host"], password=settings["server"]["redis_password"])
 
     redis_cache = functools.partial(
